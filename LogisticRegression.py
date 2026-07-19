@@ -18,11 +18,16 @@ class LogisticRegression:
         self.b=0.0
 
         for epoch in range(self.epochs):
+            
             linear=np.dot(X,self.w)+self.b
             y_pred=self.sigmoid(linear)
 
-            loss=-np.mean(y*np.log(y_pred)+(1-y)*np.log(1-y_pred))
+            # cross entropy
+            epsilon=1e-15
+            loss=-np.mean(y*np.log(y_pred+epsilon)+(1-y)*np.log(1-y_pred+epsilon))
 
+            # calculate the partial derivative of w and b in loss(w,b)
+            # using Chain Rule with the dependencies: L->p->z->w,b
             dw=(1/n_samples)*np.dot(X.T,(y_pred-y))
             db=(1/n_samples)*np.sum(y_pred-y)
 
